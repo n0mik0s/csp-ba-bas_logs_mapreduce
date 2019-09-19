@@ -1,0 +1,43 @@
+es_getdata:
+  nodes: [magneto.sdab.sn, beast.sdab.sn, storm.sdab.sn]
+  conn:
+    port: 9200
+    use_ssl: True
+    verify_certs: True
+    ca_cert: getdata.pem
+  index:
+    pattern: logstashcspba-*
+    user: logstashcspba
+    password: 12HHgty98T
+  helpers_scan:
+    request_timeout: 90
+    scroll: 15s
+    size: 5000
+
+es_putdata:
+  nodes: [alia.sdab.sn, algeoli.sdab.sn]
+  conn:
+    port: 9200
+    use_ssl: True
+    verify_certs: True
+    ca_cert: putdata.pem
+  index:
+    error:
+      pattern: logstashcspba-err-mr-
+      shards: 2
+      replicas: 1
+      user: logstashbs
+      password: logstashbs
+    input:
+      pattern: logstashcspba-input-mr-
+      shards: 4
+      replicas: 1
+      user: logstashbs
+      password: logstashbs
+
+hdfs:
+  namenodes: [alderamin.sdab.sn, fomalgaut.sdab.sn]
+  port: 50070
+  keytab: doopy.keytab
+  principal: doopy@ITM.SN
+  tmp_dir: /tmp/
